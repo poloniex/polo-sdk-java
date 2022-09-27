@@ -22,6 +22,7 @@ Poloniex is not responsible for any losses you may incur when using this code.
 - Generate an [API Key](<https://poloniex.com/apiKeys>).
 - [Get the source files](#source).
 - See code [sample](src/test/java/com/poloniex/api/client/PoloClientSample.java).
+- Refer to the [Javadocs](https://poloniex.github.io/polo-sdk-java/).
 - For license refer to [LICENSE file](./LICENSE)
 
 <a name="source"></a>Get the code files with git.

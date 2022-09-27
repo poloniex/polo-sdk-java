@@ -1,0 +1,7 @@
+com.poloniex.api.client.common
+com.poloniex.api.client.model
+com.poloniex.api.client.model.event
+com.poloniex.api.client.model.request
+com.poloniex.api.client.rest
+com.poloniex.api.client.security
+com.poloniex.api.client.ws
