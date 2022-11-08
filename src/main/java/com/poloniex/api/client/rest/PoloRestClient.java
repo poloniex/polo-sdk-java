@@ -5,6 +5,7 @@ import com.poloniex.api.client.model.*;
 import com.poloniex.api.client.model.request.*;
 import retrofit2.Call;
 import retrofit2.Response;
+import retrofit2.http.Query;
 
 import java.io.IOException;
 import java.util.List;
@@ -371,6 +372,35 @@ public class PoloRestClient {
             throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
         }
         return execute(poloPrivateApiService.getAccountsTransferById(id));
+    }
+
+    /**
+     * Account Activity:
+     * Get a list of activities such as airdrop, rebates, staking, credit/debit adjustments, and other (historical adjustments).
+     *
+     * @param startTime (milliseconds since UNIX epoch) Trades filled before startTime will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) Trades filled after endTime will not be retrieved.
+     * @param activityType Type of activity: ALL: 200, AIRDROP: 201, COMMISSION_REBATE: 202, STAKING: 203,
+     *                                       REFERAL_REBATE: 204, CREDIT_ADJUSTMENT: 104, DEBIT_ADJUSTMENT: 105,
+     *                                       OTHER: 199
+     * @param limit The max number of records could be returned. Default is 100 and max is 1000.
+     * @param from It is 'id'. The query begin at ‘from', and the default is 0.
+     * @param direction PRE, NEXT, default is NEXT
+     * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @return List of account activity
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code List<ActivityResponse> activityResponseList = poloniexApiClient.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "");}
+     *  </pre>
+     */
+    public List<ActivityResponse> getAccountsActivity(Long startTime, Long endTime, Integer activityType, Integer limit,
+                                                      Long from, String direction, String currency) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+
+        return execute(poloPrivateApiService.getAccountsActivity(startTime, endTime, activityType, limit, from,
+                                                                 direction, currency));
     }
 
     /**
@@ -927,6 +957,50 @@ public class PoloRestClient {
         }
 
         return execute(poloPrivateApiService.getSmartOrderHistory(accountType, type, side, symbol, from, direction, states, limit, hideCancel, startTime, endTime));
+    }
+
+    // kill switch
+    /**
+     * Set Kill Switch
+     * Set a timer that cancels all regular and smartorders after the timeout has expired. Timeout can be reset by
+     * calling this command again with a new timeout value. A timeout value of -1 disables the timer. Timeout is defined
+     * in seconds.
+     *
+     * @param timeout Timer value in seconds; range is -1 and 10 to 600.
+     * @return kill switch response object
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code KillSwitchResponse killSwitchResponse = poloniexApiClient.setKillSwitch("15");}
+     *  </pre>
+     */
+    public KillSwitchResponse setKillSwitch(String timeout){
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+
+        final KillSwitchRequest request = KillSwitchRequest.builder()
+                .timeout(timeout)
+                .build();
+        return execute(poloPrivateApiService.setKillSwitch(request));
+    }
+
+    /**
+     * Get Kill Switch
+     * Get status of kill switch. If there is an active kill switch then the start and cancellation time is returned.
+     * If no active kill switch then an error message with code is returned.
+     *
+     * @return kill switch response object
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code KillSwitchResponse killSwitchResponse = poloniexApiClient.getKillSwitch();}
+     *  </pre>
+     */
+    public KillSwitchResponse getKillSwitch() {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+
+        return execute(poloPrivateApiService.getKillSwitch());
     }
 
     // trades

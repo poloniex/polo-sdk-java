@@ -104,16 +104,18 @@
                     <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
                     <addOutputDirectory>false</addOutputDirectory>
                 </configuration>
-                <executions>
+                <!-- uncomment for javadoc generation-->
+                <!-- executions>
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>delombok</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions -->
             </plugin>
-            <plugin>
+            <!-- uncomment for javadoc generation-->
+            <!-- plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.4.0</version>
@@ -121,7 +123,7 @@
                     <sourcepath>${project.build.directory}/generated-sources/delombok</sourcepath>
                     <doclint>none</doclint>
                 </configuration>
-            </plugin>
+            </plugin -->
         </plugins>
     </build>
 

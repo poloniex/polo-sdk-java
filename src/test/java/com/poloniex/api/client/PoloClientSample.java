@@ -89,6 +89,7 @@ public class PoloClientSample {
         log.info("getAccountsTransfers: {}", writer.writeValueAsString(poloniexApiClient.getAccountsTransfers(null, null, null, null)));
         log.info("getAccountsTransfers: {}", writer.writeValueAsString(poloniexApiClient.getAccountsTransferById(123L)));
         log.info("getFeeInfo: {}", writer.writeValueAsString(poloniexApiClient.getFeeInfo()));
+        log.info("getAccountsActivity: {}", writer.writeValueAsString(poloniexApiClient.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "")));
 
         // wallets
         log.info("getDepositAddresses: {}", writer.writeValueAsString(poloniexApiClient.getDepositAddresses()));
@@ -139,6 +140,10 @@ public class PoloClientSample {
         log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(null, null, null, null, null)));
         log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT")));
         log.info("getUserTradesByOrderId: {}", writer.writeValueAsString(poloniexApiClient.getUserTradesByOrderId(62759197997072384L)));
+
+        //kill switch
+        log.info("setKillSwitch: {}", writer.writeValueAsString(poloniexApiClient.setKillSwitch("15")));
+        log.info("getKillSwitch: {}", writer.writeValueAsString(poloniexApiClient.getKillSwitch()));
     }
 
     private static void websocketPublicTest() {

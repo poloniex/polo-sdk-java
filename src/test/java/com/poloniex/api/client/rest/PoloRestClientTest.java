@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.internal.util.reflection.FieldSetter;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -1074,6 +1075,84 @@ class PoloRestClientTest {
         FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
         try {
             rest.getAccountsTransferById(1L);
+            Assertions.fail("Exception not thrown");
+        } catch (PoloApiException e) {
+            Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetAccountsActivity() throws NoSuchFieldException {
+        ActivityResponse activityResponse = new ActivityResponse();
+        activityResponse.setId("123");
+        activityResponse.setCurrency("BTC");
+        activityResponse.setAmount("5");
+        activityResponse.setState("SUCCESS");
+        activityResponse.setCreateTime(1500L);
+        activityResponse.setDescription("Your airdrop for BTC");
+        activityResponse.setActivityType(201);
+
+        List<ActivityResponse> activityResponseList = new ArrayList<>();
+        activityResponseList.add(activityResponse);
+        Call<List<ActivityResponse>> call = new Call<List<ActivityResponse>>()  {
+            @Override
+            public Response<List<ActivityResponse>> execute() throws IOException {
+                Response<List<ActivityResponse>> response = Response.success(activityResponseList);
+                return response;
+            }
+
+            @Override
+            public void enqueue(Callback<List<ActivityResponse>> callback) {
+
+            }
+
+            @Override
+            public boolean isExecuted() {
+                return false;
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public boolean isCanceled() {
+                return false;
+            }
+
+            @Override
+            public Call<List<ActivityResponse>> clone() {
+                return null;
+            }
+
+            @Override
+            public Request request() {
+                return null;
+            }
+        };
+        when(poloPrivateApiService.getAccountsActivity(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong(),
+                                                       ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(),
+                                                       ArgumentMatchers.anyLong(), ArgumentMatchers.anyString(),
+                                                       ArgumentMatchers.anyString())).thenReturn(call);
+        List<ActivityResponse> response = rest.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "");
+        verify(poloPrivateApiService, times(1))
+                .getAccountsActivity(ArgumentMatchers.anyLong(), ArgumentMatchers.anyLong(),
+                        ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(),
+                        ArgumentMatchers.anyLong(), ArgumentMatchers.anyString(),
+                        ArgumentMatchers.anyString());
+        Assertions.assertEquals(activityResponse.getId(), response.get(0).getId());
+        Assertions.assertEquals(activityResponse.getCurrency(), response.get(0).getCurrency());
+        Assertions.assertEquals(activityResponse.getAmount(), response.get(0).getAmount());
+        Assertions.assertEquals(activityResponse.getState(), response.get(0).getState());
+        Assertions.assertEquals(activityResponse.getCreateTime(), response.get(0).getCreateTime());
+        Assertions.assertEquals(activityResponse.getDescription(), response.get(0).getDescription());
+        Assertions.assertEquals(activityResponse.getActivityType(), response.get(0).getActivityType());
+
+        //exception
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
+        try {
+            rest.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "");
             Assertions.fail("Exception not thrown");
         } catch (PoloApiException e) {
             Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
@@ -2688,6 +2767,126 @@ class PoloRestClientTest {
         FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
         try {
             rest.getUserTradesByOrderId(1L);
+            Assertions.fail("Exception not thrown");
+        } catch (PoloApiException e) {
+            Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
+        }
+    }
+
+    @Test
+    void testSetKillSwitch() throws NoSuchFieldException {
+        KillSwitchRequest killSwitchRequest = new KillSwitchRequest("15");
+
+        KillSwitchResponse killSwitchResponse = new KillSwitchResponse();
+        killSwitchResponse.setStartTime(1500L);
+        killSwitchResponse.setCancellationTime("3000");
+
+        Call<KillSwitchResponse> call = new Call<KillSwitchResponse>() {
+            @Override
+            public Response<KillSwitchResponse> execute() throws IOException {
+                Response<KillSwitchResponse> response = Response.success(killSwitchResponse);
+                return response;
+            }
+
+            @Override
+            public void enqueue(Callback<KillSwitchResponse> callback) {
+
+            }
+
+            @Override
+            public boolean isExecuted() {
+                return false;
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public boolean isCanceled() {
+                return false;
+            }
+
+            @Override
+            public Call<KillSwitchResponse> clone() {
+                return null;
+            }
+
+            @Override
+            public Request request() {
+                return null;
+            }
+        };
+        when(poloPrivateApiService.setKillSwitch(killSwitchRequest)).thenReturn(call);
+        KillSwitchResponse response = rest.setKillSwitch("15");
+        verify(poloPrivateApiService, times(1)).setKillSwitch(ArgumentMatchers.any());
+        Assertions.assertEquals(killSwitchResponse.getStartTime(), response.getStartTime());
+        Assertions.assertEquals(killSwitchResponse.getCancellationTime(), response.getCancellationTime());
+
+        //exception
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
+        try {
+            rest.setKillSwitch("15");
+            Assertions.fail("Exception not thrown");
+        } catch (PoloApiException e) {
+            Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
+        }
+    }
+
+    @Test
+    void testGetKillSwitch() throws NoSuchFieldException {
+        KillSwitchResponse killSwitchResponse = new KillSwitchResponse();
+        killSwitchResponse.setStartTime(1500L);
+        killSwitchResponse.setCancellationTime("3000");
+
+        Call<KillSwitchResponse> call = new Call<KillSwitchResponse>() {
+            @Override
+            public Response<KillSwitchResponse> execute() throws IOException {
+                Response<KillSwitchResponse> response = Response.success(killSwitchResponse);
+                return response;
+            }
+
+            @Override
+            public void enqueue(Callback<KillSwitchResponse> callback) {
+
+            }
+
+            @Override
+            public boolean isExecuted() {
+                return false;
+            }
+
+            @Override
+            public void cancel() {
+
+            }
+
+            @Override
+            public boolean isCanceled() {
+                return false;
+            }
+
+            @Override
+            public Call<KillSwitchResponse> clone() {
+                return null;
+            }
+
+            @Override
+            public Request request() {
+                return null;
+            }
+        };
+        when(poloPrivateApiService.getKillSwitch()).thenReturn(call);
+        KillSwitchResponse response = rest.getKillSwitch();
+        verify(poloPrivateApiService, times(1)).getKillSwitch();
+        Assertions.assertEquals(killSwitchResponse.getStartTime(), response.getStartTime());
+        Assertions.assertEquals(killSwitchResponse.getCancellationTime(), response.getCancellationTime());
+
+        //exception
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
+        try {
+            rest.getKillSwitch();
             Assertions.fail("Exception not thrown");
         } catch (PoloApiException e) {
             Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());

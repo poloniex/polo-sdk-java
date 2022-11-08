@@ -23,6 +23,7 @@ public class PoloApiConstants {
     public static final String ACCOUNTS_ID_BALANCES = "/accounts/{account_id}/balances";
     public static final String ACCOUNTS_TRANSFER = "/accounts/transfer";
     public static final String ACCOUNTS_TRANSFER_ID = "/accounts/transfer/{id}";
+    public static final String ACCOUNTS_ACTIVITY = "/accounts/activity";
     public static final String FEE_INFO = "/feeinfo/";
 
     public static final String WALLETS_ADDRESSES = "/wallets/addresses";
@@ -35,6 +36,9 @@ public class PoloApiConstants {
     public static final String ORDERS_BY_CID = "/orders/cid:{client_order_id}";
     public static final String ORDERS_CANCEL_BY_IDS = "/orders/cancelByIds";
     public static final String ORDERS_HISTORY = "/orders/history";
+
+    public static final String KILL_SWITCH_POST = "/orders/killSwitch";
+    public static final String KILL_SWITCH_GET = "/orders/killSwitchStatus";
 
     public static final String SMARTORDERS = "/smartorders";
     public static final String SMARTORDERS_BY_ID = "/smartorders/{id}";

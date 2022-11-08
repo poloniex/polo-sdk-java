@@ -84,6 +84,30 @@ public interface PoloPrivateApiService {
     Call<AccountsTransferRecord> getAccountsTransferById(@Path("id") Long id);
 
     /**
+     * Account Activity:
+     * Get a list of activities such as airdrop, rebates, staking, credit/debit adjustments, and other (historical adjustments).
+     *
+     * @param startTime (milliseconds since UNIX epoch) Trades filled before startTime will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) Trades filled after endTime will not be retrieved.
+     * @param activityType Type of activity: ALL: 200, AIRDROP: 201, COMMISSION_REBATE: 202, STAKING: 203,
+     *                                       REFERAL_REBATE: 204, CREDIT_ADJUSTMENT: 104, DEBIT_ADJUSTMENT: 105,
+     *                                       OTHER: 199
+     * @param limit The max number of records could be returned. Default is 100 and max is 1000.
+     * @param from It is 'id'. The query begin at ‘from', and the default is 0.
+     * @param direction PRE, NEXT, default is NEXT
+     * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @return List of account activity
+     */
+    @GET(ACCOUNTS_ACTIVITY)
+    Call<List<ActivityResponse>> getAccountsActivity(@Query("startTime") Long startTime,
+                                                     @Query("endTime") Long endTime,
+                                                     @Query("activityType") Integer activityType,
+                                                     @Query("limit") Integer limit,
+                                                     @Query("from") Long from,
+                                                     @Query("direction") String direction,
+                                                     @Query("currency") String currency);
+
+    /**
      * Fee Info:
      * Get fee rate for an account
      *
@@ -258,6 +282,25 @@ public interface PoloPrivateApiService {
                                       @Query("hideCancel") Boolean hideCancel,
                                       @Query("startTime") Long startTime,
                                       @Query("endTime") Long endTime);
+
+    /**
+     * Set Kill Switch:
+     * Set a timer that cancels all regular and smartorders after the timeout has expired.
+     *
+     * @param killSwitchRequest request with timeout details for creating kill switch
+     * @return kill switch details
+     */
+    @POST(KILL_SWITCH_POST)
+    Call<KillSwitchResponse> setKillSwitch(@Body KillSwitchRequest killSwitchRequest);
+
+    /**
+     * Get Kill Switch:
+     * Get status of kill switch.
+     *
+     * @return kill switch details
+     */
+    @GET(KILL_SWITCH_GET)
+    Call<KillSwitchResponse> getKillSwitch();
 
     // smart orders
 
