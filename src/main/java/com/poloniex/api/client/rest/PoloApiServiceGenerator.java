@@ -39,7 +39,6 @@ public class PoloApiServiceGenerator {
 
         OkHttpClient client = httpClient.newBuilder()
                 .addInterceptor(new AuthenticationRequestInterceptor(apiKey, secret))
-                .addInterceptor(logging)
                 .build();
 
         final Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
