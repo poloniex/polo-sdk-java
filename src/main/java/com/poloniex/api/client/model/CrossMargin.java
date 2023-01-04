@@ -1,24 +1,23 @@
-package com.poloniex.api.client.model.event;
+package com.poloniex.api.client.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 /**
- * Polo Auth Event defines the format for auth events
+ * Cross Margin Information
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PoloAuthEvent {
+public class CrossMargin {
+    /**
+     * indicates if symbol supports cross margin
+     */
+    private Boolean supportCrossMargin;
 
     /**
-     * channel name
+     * maximum supported leverage
      */
-    private String channel;
-
-    /**
-     * list of data events
-     */
-    private AuthData data;
+    private Integer maxLeverage;
 }

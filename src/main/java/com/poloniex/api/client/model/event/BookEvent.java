@@ -1,5 +1,6 @@
 package com.poloniex.api.client.model.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
  * Book event
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BookEvent {
 
     /**

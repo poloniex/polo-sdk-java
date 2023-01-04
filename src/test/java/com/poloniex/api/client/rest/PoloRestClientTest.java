@@ -1008,16 +1008,34 @@ class PoloRestClientTest {
                 return null;
             }
         };
-        when(poloPrivateApiService.getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString())).thenReturn(call);
+
+        when(poloPrivateApiService.getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString(), isNull(), isNull())).thenReturn(call);
         List<AccountsTransferRecord> records = rest.getAccountsTransfers(1, 1L, "te", "st");
         verify(poloPrivateApiService, times(1))
-                .getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString());
+                .getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString(), isNull(), isNull());
         Assertions.assertEquals("test", records.get(0).getId());
 
         //exception
         FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
         try {
             rest.getAccountsTransfers(1, 1L, "te", "st");
+            Assertions.fail("Exception not thrown");
+        } catch (PoloApiException e) {
+            Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
+        }
+
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), poloPrivateApiService);
+
+        when(poloPrivateApiService.getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString(), anyLong(), anyLong())).thenReturn(call);
+        records = rest.getAccountsTransfers(1, 1L, "te", "st", 1000L, 2000L);
+        verify(poloPrivateApiService, times(1))
+                .getAccountsTransfers(anyInt(), anyLong(), anyString(), anyString(), anyLong(), anyLong());
+        Assertions.assertEquals("test", records.get(0).getId());
+
+        //exception
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
+        try {
+            rest.getAccountsTransfers(1, 1L, "te", "st", 1000L, 2000L);
             Assertions.fail("Exception not thrown");
         } catch (PoloApiException e) {
             Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
@@ -2697,17 +2715,36 @@ class PoloRestClientTest {
                 return null;
             }
         };
-        when(poloPrivateApiService.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT"))
+
+        when(poloPrivateApiService.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", null))
                 .thenReturn(call);
         List<Trade> orders = rest.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT");
         verify(poloPrivateApiService, times(1))
-                .getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT");
+                .getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", null);
         Assertions.assertEquals("test", orders.get(0).getId());
 
         //exception
         FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
         try {
             rest.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT");
+            Assertions.fail("Exception not thrown");
+        } catch (PoloApiException e) {
+            Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());
+        }
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), poloPrivateApiService);
+
+
+        when(poloPrivateApiService.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT")))
+                .thenReturn(call);
+        orders = rest.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT"));
+        verify(poloPrivateApiService, times(1))
+                .getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT"));
+        Assertions.assertEquals("test", orders.get(0).getId());
+
+        //exception
+        FieldSetter.setField(rest, rest.getClass().getDeclaredField("poloPrivateApiService"), null);
+        try {
+            rest.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT"));
             Assertions.fail("Exception not thrown");
         } catch (PoloApiException e) {
             Assertions.assertEquals("Client must be authenticated to use this endpoint", e.getMessage());

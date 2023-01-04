@@ -1,5 +1,6 @@
 package com.poloniex.api.client.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Currency {
 
     /**
@@ -79,6 +81,16 @@ public class Currency {
      * only displayed when includeMultiChainCurrencies is set to true. Indicates whether (true) or not (false) this currency is a child chain
      */
     private Boolean isChildChain;
+
+    /**
+     * 	indicates if this currency supports collateral in cross margin
+     */
+    private Boolean supportCollateral;
+
+    /**
+     * 	indicates if this currency supports borrows in cross margin
+     */
+    private Boolean supportBorrow;
 
     /**
      * only displayed when includeMultiChainCurrencies is set to true. The child chains

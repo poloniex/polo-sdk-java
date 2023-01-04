@@ -66,13 +66,17 @@ public interface PoloPrivateApiService {
      * @param from it is 'transferId'. The query begin at ‘from', and the default is 0.
      * @param direction PRE, NEXT, default is NEXT
      * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @param startTime (milliseconds since UNIX epoch) transfers before start time will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) transfers after end time will not be retrieved.
      * @return a list of transfer records of a user.
      */
     @GET(ACCOUNTS_TRANSFER)
     Call<List<AccountsTransferRecord>> getAccountsTransfers(@Query("limit") Integer limit,
                                                             @Query("from") Long from,
                                                             @Query("direction") String direction,
-                                                            @Query("currency") String currency);
+                                                            @Query("currency") String currency,
+                                                            @Query("startTime") Long startTime,
+                                                            @Query("endTime") Long endTime);
 
     /**
      * Accounts Transfer Records by ID
@@ -435,6 +439,7 @@ public interface PoloPrivateApiService {
      * @param startTime (milliseconds since UNIX epoch) trades filled before startTime will not be retrieved.
      * @param from A 'trade Id'. The query begins at ‘from'.
      * @param direction PRE, NEXT The direction before or after ‘from'.
+     * @param symbols one or multiple symbols separated by comma
      * @return list of trades
      */
     @GET(TRADES)
@@ -442,7 +447,8 @@ public interface PoloPrivateApiService {
                                 @Query("endTime") Long endTime,
                                 @Query("startTime") Long startTime,
                                 @Query("from") Long from,
-                                @Query("direction") String direction);
+                                @Query("direction") String direction,
+                                @Query("symbols") List<String> symbols);
 
     /**
      * Trades by Order Id:

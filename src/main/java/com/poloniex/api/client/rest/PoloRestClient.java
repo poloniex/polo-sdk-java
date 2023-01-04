@@ -5,7 +5,6 @@ import com.poloniex.api.client.model.*;
 import com.poloniex.api.client.model.request.*;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.Query;
 
 import java.io.IOException;
 import java.util.List;
@@ -351,10 +350,30 @@ public class PoloRestClient {
      *  </pre>
      */
     public List<AccountsTransferRecord> getAccountsTransfers(Integer limit, Long from, String direction, String currency) {
+        return getAccountsTransfers(limit, from, direction, currency, null, null);
+    }
+
+    /**
+     * Accounts Transfer Records:
+     * Get a list of transfer records of a user.
+     *
+     * @param limit The max number of records could be returned.
+     * @param from it is 'transferId'. The query begin at ‘from', and the default is 0.
+     * @param direction PRE, NEXT, default is NEXT
+     * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @param startTime (milliseconds since UNIX epoch) transfers before start time will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) transfers after end time will not be retrieved.
+     * @return a list of transfer records of a user.
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code List<AccountsTransferRecord> accountsTransferRecords = poloniexApiClient.getAccountsTransfers(null, null, null, null);}
+     *  </pre>
+     */
+    public List<AccountsTransferRecord> getAccountsTransfers(Integer limit, Long from, String direction, String currency, Long startTime, Long endTime) {
         if (isNull(poloPrivateApiService)) {
             throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
         }
-        return execute(poloPrivateApiService.getAccountsTransfers(limit, from, direction, currency));
+        return execute(poloPrivateApiService.getAccountsTransfers(limit, from, direction, currency, startTime, endTime));
     }
 
     /**
@@ -1021,10 +1040,30 @@ public class PoloRestClient {
      *  </pre>
      */
     public List<Trade> getTrades(Integer limit, Long endTime, Long startTime, Long from, String direction) {
+        return getTrades(limit, endTime, startTime, from, direction, null);
+    }
+
+    /**
+     * Trade History:
+     * Get a list of all trades for an account.
+     *
+     * @param limit default and max value is 100.
+     * @param endTime (milliseconds since UNIX epoch) trades filled after endTime will not be retrieved.
+     * @param startTime (milliseconds since UNIX epoch) trades filled before startTime will not be retrieved.
+     * @param from A 'trade Id'. The query begins at ‘from'.
+     * @param direction PRE, NEXT The direction before or after ‘from'.
+     * @param symbols one or multiple symbols separated by comma
+     * @return list of trades
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code List<Trade>> trades = poloniexApiClient.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT"));}
+     *  </pre>
+     */
+    public List<Trade> getTrades(Integer limit, Long endTime, Long startTime, Long from, String direction, List<String> symbols) {
         if (isNull(poloPrivateApiService)) {
             throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
         }
-        return execute(poloPrivateApiService.getTrades(limit, endTime, startTime, from, direction));
+        return execute(poloPrivateApiService.getTrades(limit, endTime, startTime, from, direction, symbols));
     }
 
     /**
@@ -1053,7 +1092,14 @@ public class PoloRestClient {
             if (response.isSuccessful()) {
                 return response.body();
             } else {
-                throw new PoloApiException(nonNull(response.errorBody()) ? response.errorBody().string() : response.toString());
+                String message = null;
+                if (nonNull(response.errorBody())) {
+                    message = response.errorBody().string();
+                }
+                if (isNull(message) || message.isEmpty()) {
+                    message = response.toString();
+                }
+                throw new PoloApiException(message);
             }
         } catch (IOException e) {
             throw new PoloApiException(e.getMessage(), e);

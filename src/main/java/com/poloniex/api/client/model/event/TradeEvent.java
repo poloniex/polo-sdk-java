@@ -1,11 +1,13 @@
 package com.poloniex.api.client.model.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
  * Trade event
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TradeEvent {
 
     /**

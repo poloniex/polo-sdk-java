@@ -87,6 +87,7 @@ public class PoloClientSample {
         log.info("getAccountBalancesById: {}", writer.writeValueAsString(poloniexApiClient.getAccountBalancesById(Long.parseLong(accounts.get(0).getAccountId()))));
         log.info("accountsTransfer: {}", writer.writeValueAsString(poloniexApiClient.accountsTransfer(AccountsTransferRequest.builder().currency("USDT").amount("10.5").fromAccount("SPOT").toAccount("FUTURES").build())));
         log.info("getAccountsTransfers: {}", writer.writeValueAsString(poloniexApiClient.getAccountsTransfers(null, null, null, null)));
+        log.info("getAccountsTransfers: {}", writer.writeValueAsString(poloniexApiClient.getAccountsTransfers(null, null, null, null, null, null)));
         log.info("getAccountsTransfers: {}", writer.writeValueAsString(poloniexApiClient.getAccountsTransferById(123L)));
         log.info("getFeeInfo: {}", writer.writeValueAsString(poloniexApiClient.getFeeInfo()));
         log.info("getAccountsActivity: {}", writer.writeValueAsString(poloniexApiClient.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "")));
@@ -139,6 +140,8 @@ public class PoloClientSample {
         // trades
         log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(null, null, null, null, null)));
         log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT")));
+        log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(null, null, null, null, null, null)));
+        log.info("getTrades: {}", writer.writeValueAsString(poloniexApiClient.getTrades(10, 1655016096000L, 1655929390000L, 1000L, "NEXT", List.of("BTC_USDT","ETH_USDT"))));
         log.info("getUserTradesByOrderId: {}", writer.writeValueAsString(poloniexApiClient.getUserTradesByOrderId(62759197997072384L)));
 
         //kill switch

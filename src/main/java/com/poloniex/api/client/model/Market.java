@@ -1,5 +1,6 @@
 package com.poloniex.api.client.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
@@ -8,6 +9,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Market {
 
     /**
@@ -49,4 +51,9 @@ public class Market {
      * symbol market configuration
      */
     private SymbolTradeLimit symbolTradeLimit;
+
+    /**
+     * symbol cross margin info
+     */
+    private CrossMargin crossMargin;
 }
