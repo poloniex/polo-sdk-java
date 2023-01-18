@@ -98,4 +98,14 @@ public class Order {
      * update time
      */
     private Long updateTime;
+
+    /**
+     * code specified for canceled orders, which provides reason for the cancelation
+     * 1: "As requested by user"
+     * 1000-1999: "Due to breach of controls in matching engine
+     * 1004: "Due to self-trade"; 2000: "Due to margin liquidation"
+     * 2001: "Due to margin threshold breach"
+     * 2002: "Due to symbol marked as offline"
+     */
+    private Integer cancelReason;
 }

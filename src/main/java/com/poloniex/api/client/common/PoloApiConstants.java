@@ -8,6 +8,9 @@ public class PoloApiConstants {
     public static final String TIMESTAMP = "/timestamp";
     public static final String MARKETS_PRICE = "/markets/{symbol}/price";
     public static final String MARKETS_PRICE_ALL = "/markets/price";
+    public static final String MARKETS_MARK_PRICE_ALL = "/markets/markPrice";
+    public static final String MARKETS_MARK_PRICE = "/markets/{symbol}/markPrice";
+    public static final String MARKETS_MARK_PRICE_COMPONENTS = "/markets/{symbol}/markPriceComponents";
     public static final String MARKETS_ORDERBOOK = "/markets/{symbol}/orderBook";
     public static final String MARKETS_CANDLES = "/markets/{symbol}/candles";
     public static final String MARKETS_TRADES = "/markets/{symbol}/trades";
@@ -17,6 +20,9 @@ public class PoloApiConstants {
     public static final String MARKET = "/markets/{symbol}";
     public static final String CURRENCIES = "/currencies/";
     public static final String CURRENCY = "/currencies/{currency}";
+    public static final String MARGIN_COLLATERAL = "/markets/collateralInfo";
+    public static final String MARGIN_COLLATERAL_BY_CURRENCY = "/markets/{currency}/collateralInfo";
+    public static final String MARGIN_BORROW_RATES = "/markets/borrowRatesInfo";
 
     public static final String ACCOUNTS = "/accounts/";
     public static final String ACCOUNTS_TYPE_BALANCES = "/accounts/balances";
@@ -26,12 +32,23 @@ public class PoloApiConstants {
     public static final String ACCOUNTS_ACTIVITY = "/accounts/activity";
     public static final String FEE_INFO = "/feeinfo/";
 
+    public static final String SUBACCOUNTS = "/subaccounts";
+    public static final String SUBACCOUNTS_BALANCES = "/subaccounts/balances";
+    public static final String SUBACCOUNTS_BALANCES_BY_ID = "/subaccounts/{id}/balances";
+    public static final String SUBACCOUNTS_TRANSFER = "/subaccounts/transfer";
+    public static final String SUBACCOUNTS_TRANSFER_BY_ID = "/subaccounts/transfer/{id}";
+
     public static final String WALLETS_ADDRESSES = "/wallets/addresses";
     public static final String WALLETS_ACTIVITY = "/wallets/activity";
     public static final String WALLETS_ADDRESS = "/wallets/address";
     public static final String WALLETS_WITHDRAW = "/wallets/withdraw";
 
+    public static final String MARGIN_ACCOUNT_MARGIN = "/margin/accountMargin";
+    public static final String MARGIN_BORROW_STATUS = "/margin/borrowStatus";
+    public static final String MARGIN_MAX_SIZE = "/margin/maxSize";
+
     public static final String ORDERS = "/orders";
+    public static final String ORDERS_BATCH = "/orders/batch";
     public static final String ORDERS_BY_ID = "/orders/{id}";
     public static final String ORDERS_BY_CID = "/orders/cid:{client_order_id}";
     public static final String ORDERS_CANCEL_BY_IDS = "/orders/cancelByIds";

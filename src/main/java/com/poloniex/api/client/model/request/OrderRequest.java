@@ -58,4 +58,27 @@ public class OrderRequest {
      * Maximum 64-character length
      */
     private String clientOrderId;
+
+    /**
+     * allow order to be placed by borrowing funds (Default: false)
+     */
+    private Boolean allowBorrow;
+
+    /**
+     * if set to true then new order will be placed even if cancelation of the existing order fails; if set to false
+     * (DEFAULT value) then new order will not be placed if the cancelation of the existing order fails
+     */
+    private String proceedOnFailure;
+
+    public OrderRequest(String symbol, String side, String timeInForce, String type, String accountType, String price, String quantity, String amount, String clientOrderId) {
+        this.symbol = symbol;
+        this.side = side;
+        this.timeInForce = timeInForce;
+        this.type = type;
+        this.accountType = accountType;
+        this.price = price;
+        this.quantity = quantity;
+        this.amount = amount;
+        this.clientOrderId = clientOrderId;
+    }
 }

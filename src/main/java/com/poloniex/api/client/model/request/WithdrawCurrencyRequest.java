@@ -33,4 +33,16 @@ public class WithdrawCurrencyRequest {
      * paymentID for currencies that use a command deposit address
      */
     private String paymentID;
+
+    /**
+     * allow to transfer borrowed funds (Default: false)
+     */
+    private Boolean allowBorrow;
+
+    public WithdrawCurrencyRequest(String currency, String amount, String address, String paymentID) {
+        this.currency = currency;
+        this.amount = amount;
+        this.address = address;
+        this.paymentID = paymentID;
+    }
 }

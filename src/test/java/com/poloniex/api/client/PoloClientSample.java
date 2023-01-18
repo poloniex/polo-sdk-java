@@ -9,10 +9,8 @@ import com.poloniex.api.client.model.SmartOrder;
 import com.poloniex.api.client.model.event.OrderEvent;
 import com.poloniex.api.client.model.event.PoloEvent;
 import com.poloniex.api.client.model.event.TickerEvent;
-import com.poloniex.api.client.model.request.AccountsTransferRequest;
+import com.poloniex.api.client.model.request.*;
 import com.poloniex.api.client.common.CandlestickChannels;
-import com.poloniex.api.client.model.request.NewCurrencyAddressRequest;
-import com.poloniex.api.client.model.request.WithdrawCurrencyRequest;
 import com.poloniex.api.client.rest.PoloRestClient;
 import com.poloniex.api.client.ws.PoloApiCallback;
 import com.poloniex.api.client.ws.PoloLoggingCallback;
@@ -62,6 +60,9 @@ public class PoloClientSample {
         log.info("getTimestamp: {}", writer.writeValueAsString(poloniexApiClient.getTimestamp()));
         log.info("getPrice: {}", writer.writeValueAsString(poloniexApiClient.getPrice("BTC_USDT")));
         log.info("getPrices: {}", writer.writeValueAsString(poloniexApiClient.getPrices()));
+        log.info("getMarkPrice: {}", writer.writeValueAsString(poloniexApiClient.getMarkPrice("BTC_USDT")));
+        log.info("getMarketPriceComponents: {}", writer.writeValueAsString(poloniexApiClient.getMarketPriceComponents("BTC_USDT")));
+        log.info("getMarkPrices: {}", writer.writeValueAsString(poloniexApiClient.getMarkPrices()));
         log.info("getOrderBook: {}", writer.writeValueAsString(poloniexApiClient.getOrderBook("BTC_USDT", "10", 10)));
         log.info("getCandles: {}", writer.writeValueAsString(poloniexApiClient.getCandles("ETH_USDT", "MINUTE_5", 5, 0L, System.currentTimeMillis())));
         log.info("getMarketTrades: {}", writer.writeValueAsString(poloniexApiClient.getMarketTrades("BTC_USDT", 2)));
@@ -73,6 +74,9 @@ public class PoloClientSample {
         log.info("getCurrencies: {}", writer.writeValueAsString(poloniexApiClient.getCurrencies(null)));
         log.info("getCurrencies: {}", writer.writeValueAsString(poloniexApiClient.getCurrencies(true)));
         log.info("getCurrency: {}", writer.writeValueAsString(poloniexApiClient.getCurrency("BTC", null)));
+        log.info("getCollateralInfo: {}", writer.writeValueAsString(poloniexApiClient.getCollateralInfo()));
+        log.info("getCollateralInfo: {}", writer.writeValueAsString(poloniexApiClient.getCollateralInfo("BTC")));
+        log.info("getBorrowRatesInfo: {}", writer.writeValueAsString(poloniexApiClient.getBorrowRatesInfo()));
     }
 
     private static void testAllEndpoints(PoloRestClient poloniexApiClient) throws JsonProcessingException {
@@ -92,12 +96,26 @@ public class PoloClientSample {
         log.info("getFeeInfo: {}", writer.writeValueAsString(poloniexApiClient.getFeeInfo()));
         log.info("getAccountsActivity: {}", writer.writeValueAsString(poloniexApiClient.getAccountsActivity(1662005301209L, System.currentTimeMillis(), 200, 100, 0L, "NEXT", "")));
 
+        // subaccounts
+        log.info("getSubaccounts: {}", writer.writeValueAsString(poloniexApiClient.getSubaccounts()));
+        log.info("getSubaccountBalances: {}", writer.writeValueAsString(poloniexApiClient.getSubaccountBalances()));
+        log.info("getSubaccountBalancesById: {}", writer.writeValueAsString(poloniexApiClient.getSubaccountBalancesById("abc123")));
+        log.info("transferForSubaccount: {}", writer.writeValueAsString(poloniexApiClient.transferForSubaccount(SubaccountTransferRequest.builder().currency("USD").amount("1").fromAccountId("1000-aaa").fromAccountType("SPOT").toAccountId("2000-bbb").toAccountType("SPOT").build())));
+        log.info("transferForSubaccount: {}", writer.writeValueAsString(poloniexApiClient.getSubaccountTransferRecords(null, null, null, null, null, null, null, null, null, null)));
+        log.info("transferForSubaccount: {}", writer.writeValueAsString(poloniexApiClient.getSubaccountTransferRecords(null, null, null, "USD", null, null, null, null, null, null)));
+        log.info("getSubaccountTransferRecordsById: {}", writer.writeValueAsString(poloniexApiClient.getSubaccountTransferRecordsById(123456789L)));
+
         // wallets
         log.info("getDepositAddresses: {}", writer.writeValueAsString(poloniexApiClient.getDepositAddresses()));
         log.info("getDepositAddressesByCurrency: {}", writer.writeValueAsString(poloniexApiClient.getDepositAddressesByCurrency("USDT")));
         log.info("addNewCurrencyAddress: {}", writer.writeValueAsString(poloniexApiClient.addNewCurrencyAddress(NewCurrencyAddressRequest.builder().currency("USDT").build())));
         log.info("getWalletsActivities: {}", writer.writeValueAsString(poloniexApiClient.getWalletsActivities(System.currentTimeMillis() - 10000000L, System.currentTimeMillis(), null)));
-        log.info("withdrawCurrency: {}", writer.writeValueAsString(poloniexApiClient.withdrawCurrency(WithdrawCurrencyRequest.builder().currency("XRP").amount("1.50").address("0xbb8d").paymentID("123").build())));
+        log.info("withdrawCurrency: {}", writer.writeValueAsString(poloniexApiClient.withdrawCurrency(WithdrawCurrencyRequest.builder().currency("XRP").amount("1.50").address("0xbb8d").paymentID("123").allowBorrow(false).build())));
+
+        // margin
+        log.info("getAccountMargin: {}", writer.writeValueAsString(poloniexApiClient.getAccountMargin("SPOT")));
+        log.info("getBorrowStatus: {}", writer.writeValueAsString(poloniexApiClient.getBorrowStatus(null)));
+        log.info("getMaxSize: {}", writer.writeValueAsString(poloniexApiClient.getMaxSize("BTC_USDT")));
 
         // orders
         Order order1 = poloniexApiClient.placeOrder("BTC_USDT", "BUY", "GTC", "LIMIT", "SPOT", "20640", "1", "", "T_D_UP_" + System.currentTimeMillis());
@@ -107,6 +125,9 @@ public class PoloClientSample {
         Order order4 = poloniexApiClient.placeOrder("ETH_USDT", "BUY", "GTC", "LIMIT", "SPOT", "56", "1", "", "T_D_UP_" + System.currentTimeMillis());
         Order order5 = poloniexApiClient.placeOrder("TRX_USDT", "BUY", "GTC", "LIMIT", "SPOT", "0.01", "1000", "", "T_D_UP_" + System.currentTimeMillis());
         Order order6 = poloniexApiClient.placeOrder("ETH_USDT", "BUY", "GTC", "LIMIT", "SPOT", "56", "1", "", "T_D_UP_" + System.currentTimeMillis());
+        log.info("placeOrders: {}", writer.writeValueAsString(poloniexApiClient.placeOrders(List.of(
+                new OrderRequest("BTC_USDT", "BUY", "GTC", "LIMIT", "SPOT", "1000", "0.001", "", "T_D_UP_" + System.currentTimeMillis()),
+                new OrderRequest("ETH_USDT", "BUY", "GTC", "LIMIT", "SPOT", "100", "0.01", "", "T_D_UP_" + System.currentTimeMillis())))));
         log.info("getOrderByOrderId: {}", writer.writeValueAsString(poloniexApiClient.getOrderByOrderId(order1.getId())));
         log.info("getOrderByClientOrderId: {}", writer.writeValueAsString(poloniexApiClient.getOrderByClientOrderId(order2.getClientOrderId())));
         log.info("getOrders: {}", writer.writeValueAsString(poloniexApiClient.getOrders(null, null, null, null, null)));
@@ -116,6 +137,14 @@ public class PoloClientSample {
         log.info("cancelOrderByIds: {}", writer.writeValueAsString(poloniexApiClient.cancelOrderByIds(new String[]{order3.getId()},new String[]{order4.getClientOrderId()})));
         log.info("cancelAllOrders: {}", writer.writeValueAsString(poloniexApiClient.cancelAllOrders(new String[]{"TRX_USDT"}, new String[]{"SPOT"}))); // cancel order5
         log.info("cancelAllOrders: {}", writer.writeValueAsString(poloniexApiClient.cancelAllOrders(null, null))); // cancel order6
+
+        Order order7 = poloniexApiClient.placeOrder("BTC_USDT", "BUY", "GTC", "LIMIT", "SPOT", "20640", "1", "", "T_D_UP_" + System.currentTimeMillis());
+        log.info("placeOrder: {}", writer.writeValueAsString(order7));
+        Order order8 = poloniexApiClient.cancelReplaceOrderById(order7.getId(), "T_D_UP_" + System.currentTimeMillis(), "21000", null, null, null, null, null, "false");
+        log.info("cancelReplaceOrderById: {}", writer.writeValueAsString(order8));
+        Order order9 = poloniexApiClient.cancelReplaceOrderByClientOrderId(order8.getClientOrderId(), null, "0.5", null, null, null, false, "false");
+        log.info("cancelReplaceOrderById: {}", writer.writeValueAsString(order9));
+
         SmartOrder smartOrder1 = poloniexApiClient.placeSmartOrder("ETH_USDT", "BUY", "0.1", "STOP_LIMIT", "SPOT", "FOK", "3900", "100", "T_D_UP_" + System.currentTimeMillis(), "4000");
         log.info("placeSmartOrder: {}", writer.writeValueAsString(smartOrder1));
         SmartOrder smartOrder2 = poloniexApiClient.placeSmartOrder("ETH_USDT", "BUY", "0.1", "STOP_LIMIT", "SPOT", "FOK", "3900", "100", "T_D_UP_" + System.currentTimeMillis(), "4000");

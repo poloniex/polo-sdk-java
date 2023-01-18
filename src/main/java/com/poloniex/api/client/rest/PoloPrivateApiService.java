@@ -120,6 +120,84 @@ public interface PoloPrivateApiService {
     @GET(FEE_INFO)
     Call<FeeInfo> getFeeInfo();
 
+    // subaccounts
+
+    /**
+     * Subaccount Info:
+     * Get subaccounts for a primary account
+     *
+     * @return a list of all the accounts within an Account Group for a user.
+     */
+    @GET(SUBACCOUNTS)
+    Call<List<Subaccount>> getSubaccounts();
+
+    /**
+     * Subaccount Balances:
+     * Get balances information by currency and account type (SPOT and FUTURES) for each account in the account group.
+     * This is only functional for a primary user. A subaccount user can call /accounts/balances for SPOT account type
+     * and the futures API overview for its FUTURES balances.
+     * @return subaccount balances
+     */
+    @GET(SUBACCOUNTS_BALANCES)
+    Call<List<Subaccount>> getSubaccountBalances();
+
+    /**
+     * Subaccount Balances by ID:
+     * Get balances information by currency and account type (SPOT and FUTURES) for a given external accountId in the account group.
+     * @param id external account ID
+     * @return subaccount balances
+     */
+    @GET(SUBACCOUNTS_BALANCES_BY_ID)
+    Call<List<Subaccount>> getSubaccountBalancesById(@Path("id") String id);
+
+    /**
+     * Subaccount Transfer:
+     * Transfer amount of currency from an account and account type to another account and account type among the
+     * accounts in the account group. Primary account can transfer to and from any subaccounts as well as transfer
+     * between 2 subaccounts across account types. Subaccount can only transfer to the primary account across account types.
+     * @return transfer respose
+     */
+    @POST(SUBACCOUNTS_TRANSFER)
+    Call<SubaccountTransfer> transferForSubaccount(@Body SubaccountTransferRequest request);
+
+    /**
+     * Subaccount Transfer Records:
+     * Get a list of transfer records of a user. Max interval for start and end time is 6 months. If no start/end time
+     * params are specified then records for last 7 days will be returned.
+     *
+     * @param limit The max number of records could be returned. Default is 100 and max is 1000 records.
+     * @param from it is 'transferId'. The query begin at ‘from', and the default is 0.
+     * @param direction PRE, NEXT, default is NEXT
+     * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @param fromAccountId external UID of the from account
+     * @param fromAccountType from account type (SPOT or FUTURES)
+     * @param toAccountId external UID of the to account
+     * @param toAccountType to account type (SPOT or FUTURES)
+     * @param startTime (milliseconds since UNIX epoch) transfers before start time will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) transfers after end time will not be retrieved.
+     * @return list of transfer records
+     */
+    @GET(SUBACCOUNTS_TRANSFER)
+    Call<List<SubaccountTransfer>> getSubaccountTransferRecords(@Query("limit") Integer limit,
+                                                                @Query("from") Long from,
+                                                                @Query("direction") String direction,
+                                                                @Query("currency") String currency,
+                                                                @Query("fromAccountId") String fromAccountId,
+                                                                @Query("fromAccountType") String fromAccountType,
+                                                                @Query("toAccountId") String toAccountId,
+                                                                @Query("toAccountType") String toAccountType,
+                                                                @Query("startTime") Long startTime,
+                                                                @Query("endTime") Long endTime);
+
+    /**
+     * Subaccount Transfer Records by ID:
+     * Get a single transfer record corresponding to the transferId
+     * @param id transfer ID
+     * @return list of transfer records
+     */
+    @GET(SUBACCOUNTS_TRANSFER_BY_ID)
+    Call<List<SubaccountTransfer>> getSubaccountTransferRecordsById(@Path("id") Long id);
+
     // wallets
 
     /**
@@ -167,6 +245,38 @@ public interface PoloPrivateApiService {
     @POST(WALLETS_WITHDRAW)
     Call<WithdrawCurrencyResponse> withdrawCurrency(@Body WithdrawCurrencyRequest withdrawCurrencyRequest);
 
+    // margin
+
+    /**
+     * Account Margin:
+     * Get account margin information
+     *
+     * @param accountType The account type. Currently only SPOT is supported
+     * @return account margin info
+     */
+    @GET(MARGIN_ACCOUNT_MARGIN)
+    Call<AccountMargin> getAccountMargin(@Query("accountType") String accountType);
+
+    /**
+     * Borrow Status:
+     * Get borrow status of currencies
+     *
+     * @param currency currency name
+     * @return borrow status of currencies
+     */
+    @GET(MARGIN_BORROW_STATUS)
+    Call<List<BorrowStatus>> getBorrowStatus(@Query("currency") String currency);
+
+    /**
+     * Maximum Buy/Sell Amount:
+     * Get maximum and available buy/sell amount for a given symbol.
+     *
+     * @param symbol symbol name
+     * @return maximum and available buy/sell amount
+     */
+    @GET(MARGIN_MAX_SIZE)
+    Call<MaxSize> getMaxSize(@Query("symbol") String symbol);
+
     // orders
 
     /**
@@ -178,6 +288,46 @@ public interface PoloPrivateApiService {
      */
     @POST(ORDERS)
     Call<Order> placeOrder(@Body OrderRequest orderRequest);
+
+    /**
+     * Create Multiple Orders:
+     * Create multiple orders via a single request. Max limit of 20 orders. Request parameter is an array of json objects with order details.
+     *
+     * @param orderRequests list of requests with details for creating an order
+     * @return list of order details
+     */
+    @POST(ORDERS_BATCH)
+    Call<List<Order>> placeOrders(@Body List<OrderRequest> orderRequests);
+
+    /**
+     * Cancel Replace Order:
+     * Cancel an existing active order, new or partially filled, and place a new order on the same symbol with details
+     * from existing order unless amended by new parameters. The replacement order can amend price, quantity, amount,
+     * type, timeInForce, and allowBorrow fields. Specify the existing order id in the path; if id is a clientOrderId,
+     * prefix with cid: e.g. cid:myId-1. The proceedOnFailure flag is intended to specify whether to continue with new
+     * order placement in case cancelation of the existing order fails.
+     *
+     * @param id order id
+     * @param orderRequest request with details for replacing an order
+     * @return order details
+     */
+    @PUT(ORDERS_BY_ID)
+    Call<Order> cancelReplaceOrderById(@Path("id") String id, @Body OrderRequest orderRequest);
+
+    /**
+     * Cancel Replace Order:
+     * Cancel an existing active order, new or partially filled, and place a new order on the same symbol with details
+     * from existing order unless amended by new parameters. The replacement order can amend price, quantity, amount,
+     * type, timeInForce, and allowBorrow fields. Specify the existing order id in the path; if id is a clientOrderId,
+     * prefix with cid: e.g. cid:myId-1. The proceedOnFailure flag is intended to specify whether to continue with new
+     * order placement in case cancelation of the existing order fails.
+     *
+     * @param clientOrderId user specified order id
+     * @param orderRequest request with details for replacing an order
+     * @return order details
+     */
+    @PUT(ORDERS_BY_CID)
+    Call<Order> cancelReplaceOrderByClientOrderId(@Path("client_order_id") String clientOrderId, @Body OrderRequest orderRequest);
 
     /**
      * Open Orders:

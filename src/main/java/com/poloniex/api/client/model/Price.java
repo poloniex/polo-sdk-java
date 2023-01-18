@@ -18,22 +18,22 @@ public class Price {
     private String symbol;
 
     /**
-     * symbol name
+     * current price
      */
     private String price;
 
     /**
-     * symbol name
+     * time the record was created
      */
     private Long time;
 
     /**
-     * symbol name
+     * daily change in decimal
      */
     private String dailyChange;
 
     /**
-     * symbol name
+     * time the record was pushed
      */
     private Long ts;
 }

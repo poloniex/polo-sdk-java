@@ -184,6 +184,38 @@ public class PoloRestClient {
     }
 
     /**
+     * Mark Prices:
+     * Get latest mark price for all cross margin symbols.
+     *
+     * @return all mark prices
+     */
+    public List<MarkPrice> getMarkPrices() {
+        return execute(poloPublicApiService.getMarkPrices());
+    }
+
+    /**
+     * Mark Price:
+     * Get latest mark price for a single cross margin symbol.
+     *
+     * @param symbol symbol name
+     * @return mark price
+     */
+    public MarkPrice getMarkPrice(String symbol) {
+        return execute(poloPublicApiService.getMarkPrice(symbol));
+    }
+
+    /**
+     * Market Price Components:
+     * Get components of the mark price for a given symbol
+     *
+     * @param symbol symbol name
+     * @return market price components
+     */
+    public MarkPriceComponents getMarketPriceComponents(String symbol) {
+        return execute(poloPublicApiService.getMarketPriceComponents(symbol));
+    }
+
+    /**
      * Order Book:
      * Get the order book for a given symbol
      *
@@ -262,6 +294,36 @@ public class PoloRestClient {
      */
     public List<Ticker24h> getTicker24hAll() {
         return execute(poloPublicApiService.getTicker24hAll());
+    }
+
+    /**
+     * Collateral Info:
+     * Get collateral information for all currencies.
+     *
+     * @return list of collateral information
+     */
+    public List<CollateralInfo> getCollateralInfo() {
+        return execute(poloPublicApiService.getCollateralInfo());
+    }
+
+    /**
+     * Collateral Info:
+     * Get collateral information for a single currency.
+     *
+     * @return collateral information
+     */
+    public CollateralInfo getCollateralInfo(String currency) {
+        return execute(poloPublicApiService.getCollateralInfo(currency));
+    }
+
+    /**
+     * Borrow Rates Info
+     * Get borrow rates information for all tiers and currencies.
+     *
+     * @return borrow rate tiers
+     */
+    public List<BorrowRateTier> getBorrowRatesInfo() {
+        return execute(poloPublicApiService.getBorrowRatesInfo());
     }
 
     // private endpoints
@@ -439,6 +501,103 @@ public class PoloRestClient {
         return execute(poloPrivateApiService.getFeeInfo());
     }
 
+    // subaccounts
+
+    /**
+     * Subaccount Info:
+     * Get subaccounts for a primary account
+     *
+     * @return a list of all the accounts within an Account Group for a user.
+     */
+    public List<Subaccount> getSubaccounts() {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getSubaccounts());
+    }
+
+    /**
+     * Subaccount Balances:
+     * Get balances information by currency and account type (SPOT and FUTURES) for each account in the account group.
+     * This is only functional for a primary user. A subaccount user can call /accounts/balances for SPOT account type
+     * and the futures API overview for its FUTURES balances.
+     * @return subaccount balances
+     */
+    public List<Subaccount> getSubaccountBalances() {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getSubaccountBalances());
+    }
+
+    /**
+     * Subaccount Balances by ID:
+     * Get balances information by currency and account type (SPOT and FUTURES) for a given external accountId in the account group.
+     * @param id external account ID
+     * @return subaccount balances
+     */
+    public List<Subaccount> getSubaccountBalancesById(String id) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getSubaccountBalancesById(id));
+    }
+
+    /**
+     * Subaccount Transfer:
+     * Transfer amount of currency from an account and account type to another account and account type among the
+     * accounts in the account group. Primary account can transfer to and from any subaccounts as well as transfer
+     * between 2 subaccounts across account types. Subaccount can only transfer to the primary account across account types.
+     * @return transfer respose
+     */
+    public SubaccountTransfer transferForSubaccount(SubaccountTransferRequest request) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.transferForSubaccount(request));
+    }
+
+    /**
+     * Subaccount Transfer Records:
+     * Get a list of transfer records of a user. Max interval for start and end time is 6 months. If no start/end time
+     * params are specified then records for last 7 days will be returned.
+     *
+     * @param limit The max number of records could be returned. Default is 100 and max is 1000 records.
+     * @param from it is 'transferId'. The query begin at ‘from', and the default is 0.
+     * @param direction PRE, NEXT, default is NEXT
+     * @param currency The transferred currency, like USDT. Default is for all currencies, if not specified.
+     * @param fromAccountId external UID of the from account
+     * @param fromAccountType from account type (SPOT or FUTURES)
+     * @param toAccountId external UID of the to account
+     * @param toAccountType to account type (SPOT or FUTURES)
+     * @param startTime (milliseconds since UNIX epoch) transfers before start time will not be retrieved.
+     * @param endTime (milliseconds since UNIX epoch) transfers after end time will not be retrieved.
+     * @return list of transfer records
+     */
+    public List<SubaccountTransfer> getSubaccountTransferRecords(Integer limit, Long from, String direction,
+                                                                  String currency, String fromAccountId,
+                                                                  String fromAccountType, String toAccountId,
+                                                                  String toAccountType, Long startTime, Long endTime) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getSubaccountTransferRecords(limit, from, direction, currency,
+                fromAccountId, fromAccountType, toAccountId, toAccountType, startTime, endTime));
+    }
+
+    /**
+     * Subaccount Transfer Records by ID:
+     * Get a single transfer record corresponding to the transferId
+     * @param id transfer ID
+     * @return list of transfer records
+     */
+    public List<SubaccountTransfer> getSubaccountTransferRecordsById(Long id) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getSubaccountTransferRecordsById(id));
+    }
+
     // wallets
 
     /**
@@ -533,6 +692,50 @@ public class PoloRestClient {
         return execute(poloPrivateApiService.withdrawCurrency(withdrawCurrencyRequest));
     }
 
+    // margin
+
+    /**
+     * Account Margin:
+     * Get account margin information
+     *
+     * @param accountType The account type. Currently only SPOT is supported
+     * @return account margin info
+     */
+    public AccountMargin getAccountMargin(String accountType) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getAccountMargin(accountType));
+    }
+
+    /**
+     * Borrow Status:
+     * Get borrow status of currencies
+     *
+     * @param currency currency name
+     * @return borrow status of currencies
+     */
+    public List<BorrowStatus> getBorrowStatus(String currency) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getBorrowStatus(currency));
+    }
+
+    /**
+     * Maximum Buy/Sell Amount:
+     * Get maximum and available buy/sell amount for a given symbol.
+     *
+     * @param symbol symbol name
+     * @return maximum and available buy/sell amount
+     */
+    public MaxSize getMaxSize(String symbol) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        return execute(poloPrivateApiService.getMaxSize(symbol));
+    }
+
     // orders
 
     /**
@@ -572,6 +775,113 @@ public class PoloRestClient {
                 .clientOrderId(clientOrderId)
                 .build();
         return execute(poloPrivateApiService.placeOrder(request));
+    }
+
+    /**
+     * Create Order:
+     * Create an order for an account.
+     *
+     * @param orderRequest order request
+     * @return order details
+     * <dt><b>Example:</b></dt>
+     *  <pre>
+     *  {@code Order order = poloniexApiClient.placeOrder("BTC_USDT", "BUY", "GTC", "LIMIT", "SPOT", "20640", "1", "", "T_D_UP_" + System.currentTimeMillis());}
+     *  </pre>
+     */
+    public Order placeOrder(OrderRequest orderRequest) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+
+        return execute(poloPrivateApiService.placeOrder(orderRequest));
+    }
+
+    /**
+     * Create Multiple Orders:
+     * Create multiple orders via a single request. Max limit of 20 orders. Request parameter is an array of json objects with order details.
+     *
+     * @param orderRequests list of requests with details for creating an order
+     * @return list of order details
+     */
+    public List<Order> placeOrders(List<OrderRequest> orderRequests) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+
+        return execute(poloPrivateApiService.placeOrders(orderRequests));
+    }
+
+    /**
+     * Cancel Replace Order:
+     * Cancel an existing active order, new or partially filled, and place a new order on the same symbol with details
+     * from existing order unless amended by new parameters. The replacement order can amend price, quantity, amount,
+     * type, timeInForce, and allowBorrow fields. Specify the existing order id in the path; if id is a clientOrderId,
+     * prefix with cid: e.g. cid:myId-1. The proceedOnFailure flag is intended to specify whether to continue with new
+     * order placement in case cancelation of the existing order fails.
+     *
+     * @param id order id
+     * @param clientOrderId client order id with a maximum 64-character length
+     * @param price Price is required for non-market orders
+     * @param quantity Quantity is required for MARKET type and SELL side.
+     * @param amount Amount is required for MARKET and BUY side.
+     * @param type MARKET, LIMIT, LIMIT_MAKER (Default: MARKET)
+     * @param timeInForce GTC, IOC, FOK (Default: GTC)
+     * @param allowBorrow allow order to be placed by borrowing funds (Default: false)
+     * @param proceedOnFailure if set to true then new order will be placed even if cancelation of the existing order fails;
+     *                         if set to false (DEFAULT value) then new order will not be placed if the cancelation of
+     *                         the existing order fails
+     * @return order details
+     */
+    public Order cancelReplaceOrderById(String id, String clientOrderId, String price, String quantity, String amount,
+                                        String type, String timeInForce, Boolean allowBorrow, String proceedOnFailure) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        final OrderRequest request = OrderRequest.builder()
+                .timeInForce(timeInForce)
+                .type(type)
+                .price(price)
+                .quantity(quantity)
+                .amount(amount)
+                .clientOrderId(clientOrderId)
+                .allowBorrow(allowBorrow)
+                .proceedOnFailure(proceedOnFailure)
+                .build();
+        return execute(poloPrivateApiService.cancelReplaceOrderById(id, request));
+    }
+
+    /**
+     * Cancel Replace Order:
+     * Cancel an existing active order, new or partially filled, and place a new order on the same symbol with details
+     * from existing order unless amended by new parameters. The replacement order can amend price, quantity, amount,
+     * type, timeInForce, and allowBorrow fields. Specify the existing order id in the path; if id is a clientOrderId,
+     * prefix with cid: e.g. cid:myId-1. The proceedOnFailure flag is intended to specify whether to continue with new
+     * order placement in case cancelation of the existing order fails.
+     *
+     * @param clientOrderId client order id with a maximum 64-character length
+     * @param price Price is required for non-market orders
+     * @param quantity Quantity is required for MARKET type and SELL side.
+     * @param amount Amount is required for MARKET and BUY side.
+     * @param type MARKET, LIMIT, LIMIT_MAKER (Default: MARKET)
+     * @param timeInForce GTC, IOC, FOK (Default: GTC)
+     * @param allowBorrow allow order to be placed by borrowing funds (Default: false)
+     * @return order details
+     */
+    public Order cancelReplaceOrderByClientOrderId(String clientOrderId, String price, String quantity, String amount,
+                                                   String type, String timeInForce, Boolean allowBorrow, String proceedOnFailure) {
+        if (isNull(poloPrivateApiService)) {
+            throw new PoloApiException(AUTHENTICATION_ERROR_MESSAGE);
+        }
+        final OrderRequest request = OrderRequest.builder()
+                .timeInForce(timeInForce)
+                .type(type)
+                .price(price)
+                .quantity(quantity)
+                .amount(amount)
+                .allowBorrow(allowBorrow)
+                .proceedOnFailure(proceedOnFailure)
+                .build();
+        return execute(poloPrivateApiService.cancelReplaceOrderByClientOrderId(clientOrderId, request));
     }
 
 

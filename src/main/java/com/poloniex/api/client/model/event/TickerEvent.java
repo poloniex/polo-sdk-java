@@ -69,4 +69,9 @@ public class TickerEvent {
      * time the record was pushed
      */
     private Long ts;
+
+    /**
+     * mark price at the end time
+     */
+    private String markPrice;
 }

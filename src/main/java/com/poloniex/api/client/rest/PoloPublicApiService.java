@@ -110,6 +110,35 @@ public interface PoloPublicApiService {
     Call<Price> getPrice(@Path("symbol") String symbol);
 
     /**
+     * Mark Prices:
+     * Get latest mark price for all cross margin symbols.
+     *
+     * @return all mark prices
+     */
+    @GET(MARKETS_MARK_PRICE_ALL)
+    Call<List<MarkPrice>> getMarkPrices();
+
+    /**
+     * Mark Price:
+     * Get latest mark price for a single cross margin symbol.
+     *
+     * @param symbol symbol name
+     * @return mark price
+     */
+    @GET(MARKETS_MARK_PRICE)
+    Call<MarkPrice> getMarkPrice(@Path("symbol") String symbol);
+
+    /**
+     * Market Price Components:
+     * Get components of the mark price for a given symbol
+     *
+     * @param symbol symbol name
+     * @return market price components
+     */
+    @GET(MARKETS_MARK_PRICE_COMPONENTS)
+    Call<MarkPriceComponents> getMarketPriceComponents(@Path("symbol") String symbol);
+
+    /**
      * Order Book:
      * Get the order book for a given symbol
      *
@@ -171,4 +200,31 @@ public interface PoloPublicApiService {
      */
     @GET(MARKETS_TICKER24H_ALL)
     Call<List<Ticker24h>> getTicker24hAll();
+
+    /**
+     * Collateral Info:
+     * Get collateral information for all currencies.
+     *
+     * @return list of collateral information
+     */
+    @GET(MARGIN_COLLATERAL)
+    Call<List<CollateralInfo>> getCollateralInfo();
+
+    /**
+     * Collateral Info:
+     * Get collateral information for a single currency.
+     *
+     * @return collateral information
+     */
+    @GET(MARGIN_COLLATERAL_BY_CURRENCY)
+    Call<CollateralInfo> getCollateralInfo(@Path("currency") String currency);
+
+    /**
+     * Borrow Rates Info
+     * Get borrow rates information for all tiers and currencies.
+     *
+     * @return borrow rate tiers
+     */
+    @GET(MARGIN_BORROW_RATES)
+    Call<List<BorrowRateTier>> getBorrowRatesInfo();
 }
