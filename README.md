@@ -150,3 +150,6 @@ publicWebsocket.onTickerEvent(List.of("TRX_USDT"), new PoloLoggingCallback<>());
 ```java
 privateWebsocket.onOrderEvent(List.of("all"), new PoloLoggingCallback<>());
 ```
+
+
+
