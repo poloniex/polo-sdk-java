@@ -7,9 +7,10 @@ import lombok.Data;
 //@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MarkPriceEvent {
-    private String s;   // 操作类型：subscribe（订阅）或 unsubscribe（取消订阅）
+    private String s;   // symbol
 
-    private String mPx;    // 错误代码
-    private Long ts; // 错误消息
+    private String mPx;    // Mark price
+
+    private Long ts; // Push time (millisecond)
 
 }
