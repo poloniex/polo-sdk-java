@@ -37,10 +37,11 @@ git clone https://github.com/poloniex/polo-sdk-java
 ### Using Maven
 Add the following dependency to your Maven pom.xml file:
 ```xml
+
 <dependency>
-  <groupId>com.poloniex.api</groupId>
-  <artifactId>polo-sdk-java</artifactId>
-  <version>1.0.0</version>
+    <groupId>com.poloniex.api</groupId>
+    <artifactId>polo-sdk-java</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -58,7 +59,6 @@ mvn install
 | **Environment** | **Host URL** |
 | -------- | -------- |
 | *Production* | https://api.poloniex.com |
-| *Sandbox* | https://sandbox-api.poloniex.com |
 #### Public
 ```java
 PoloRestClient poloniexApiClient = new PoloRestClient(POLO_HOST_URL);
@@ -72,8 +72,6 @@ PoloRestClient poloniexApiClient = new PoloRestClient(POLO_HOST_URL, API_KEY, SE
 | -------- | -------- | -------- |
 | Production | Public | wss://ws.poloniex.com/ws/public |
 | Production | Authenticated | wss://ws.poloniex.com/ws/private |
-| Sandbox | Public | wss://sandbox-ws.poloniex.com/ws/public |
-| Sandbox | Authenticated | wss://sandbox-ws.poloniex.com/ws/private |
 #### Public
 ```java
 OkHttpClient httpClient = new OkHttpClient.Builder().build();
@@ -139,7 +137,6 @@ PoloApiCallback<TickerEvent> callback = new PoloApiCallback<>() {
         }
     };
     publicWebsocket.onTickerEvent(List.of("TRX_USDT"), callback);
-}
 ```
 Using callback class:
 ```java
