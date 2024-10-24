@@ -1,0 +1,20 @@
+package com.poloniex.api.client.future.model.request.future;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+@AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class GetCurrentOrdersRequest {
+    private String side;
+    private String symbol;
+    private String ordId;
+    private String clOrdId;
+    private Long from;
+    private Integer limit;
+    private String direct;
+}
