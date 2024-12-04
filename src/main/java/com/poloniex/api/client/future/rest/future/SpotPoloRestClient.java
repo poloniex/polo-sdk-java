@@ -163,7 +163,7 @@ public CancelMultipleOrdersResponse cancelMultipleOrders(CancelMultipleOrdersReq
                                                                String direct,
                                                                String sTime,
                                                                String eTime) {
-        return execute(spotPoloPrivateApiService.getPositionHistory(symbol, mgnMode, from, limit, direct, sTime, eTime));
+        return execute(spotPoloPrivateApiService.getPositionHistory(symbol, mgnMode, from, limit, direct, sTime, eTime, null));
     }
 
 
@@ -172,19 +172,19 @@ public CancelMultipleOrdersResponse cancelMultipleOrders(CancelMultipleOrdersReq
     }
 
 
-    public SwitchCrossResponse switchCross(SwitchCrossRequest request) {
-        return execute(spotPoloPrivateApiService.switchCross(request));
-    }
-
-
-    public GetMarginModeResponse getMarginMode( String symbol) {
-        return execute(spotPoloPrivateApiService.getMarginMode(symbol));
-    }
-
-
-    public GetLeverageResponse getLeverage(String symbol) {
-        return execute(spotPoloPrivateApiService.getLeverage(symbol));
-    }
+//    public SwitchCrossResponse switchCross(SwitchCrossRequest request) {
+//        return execute(spotPoloPrivateApiService.switchCross(request));
+//    }
+//
+//
+//    public GetMarginModeResponse getMarginMode( String symbol) {
+//        return execute(spotPoloPrivateApiService.getMarginMode(symbol));
+//    }
+//
+//
+//    public GetLeverageResponse getLeverage(String symbol) {
+//        return execute(spotPoloPrivateApiService.getLeverage(symbol));
+//    }
 
 
     public SetLeverageResponse setLeverage(SetLeverageRequest request) {

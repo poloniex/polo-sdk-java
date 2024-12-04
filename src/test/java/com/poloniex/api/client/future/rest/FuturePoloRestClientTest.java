@@ -279,9 +279,9 @@ request.add(request2);
         response.getData().add(getPositionHistory);
         Call< GetPositionHistoryResponse> call = mock(Call.class);
         when(call.execute()).thenReturn(Response.success(response));
-        when(spotPoloPrivateApiService.getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null)).thenReturn(call);
+        when(spotPoloPrivateApiService.getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null,null)).thenReturn(call);
         GetPositionHistoryResponse l2  =spotPoloRestClient.getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null);
-        verify(spotPoloPrivateApiService, times(1)).getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null);
+        verify(spotPoloPrivateApiService, times(1)).getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null,null);
         assertEquals("test", l2.getData().get(0).getCTime());
     }
     @Test
@@ -315,53 +315,53 @@ request.add(request2);
         verify(spotPoloPrivateApiService, times(1)).adjustMargin(request);
         assertEquals("test", response.getData().getSymbol());
     }
-    @Test
-    void testSwitchCross() throws IOException {
-        SwitchCrossRequest request = SwitchCrossRequest.builder().symbol("BTC").mgnMode("CROSS").build();
+//    @Test
+//    void testSwitchCross() throws IOException {
+//        SwitchCrossRequest request = SwitchCrossRequest.builder().symbol("BTC").mgnMode("CROSS").build();
+//
+//        SwitchCrossResponse atr = new SwitchCrossResponse();
+//        atr.getData().setSymbol("test");
+//
+//        Call<SwitchCrossResponse> call = mock(Call.class);
+//        when(call.execute()).thenReturn(Response.success(atr));
+//
+//        when(spotPoloPrivateApiService.switchCross(request)).thenReturn(call);
+//        SwitchCrossResponse response = spotPoloRestClient.switchCross(request);
+//        verify(spotPoloPrivateApiService, times(1)).switchCross(request);
+//        assertEquals("test", response.getData().getSymbol());
+//    }
 
-        SwitchCrossResponse atr = new SwitchCrossResponse();
-        atr.getData().setSymbol("test");
+//    @Test
+//    void testGetMarginMode() throws IOException {
+////        SwitchCrossRequest request = SwitchCrossRequest.builder().build();
+//
+//        GetMarginModeResponse atr = new GetMarginModeResponse();
+//        atr.getData().setSymbol("test");
+//
+//        Call<GetMarginModeResponse> call = mock(Call.class);
+//        when(call.execute()).thenReturn(Response.success(atr));
+//
+//        when(spotPoloPrivateApiService.getMarginMode("symbol")).thenReturn(call);
+//        GetMarginModeResponse response = spotPoloRestClient.getMarginMode("symbol");
+//        verify(spotPoloPrivateApiService, times(1)).getMarginMode("symbol");
+//        assertEquals("test", response.getData().getSymbol());
+//    }
 
-        Call<SwitchCrossResponse> call = mock(Call.class);
-        when(call.execute()).thenReturn(Response.success(atr));
-
-        when(spotPoloPrivateApiService.switchCross(request)).thenReturn(call);
-        SwitchCrossResponse response = spotPoloRestClient.switchCross(request);
-        verify(spotPoloPrivateApiService, times(1)).switchCross(request);
-        assertEquals("test", response.getData().getSymbol());
-    }
-
-    @Test
-    void testGetMarginMode() throws IOException {
-//        SwitchCrossRequest request = SwitchCrossRequest.builder().build();
-
-        GetMarginModeResponse atr = new GetMarginModeResponse();
-        atr.getData().setSymbol("test");
-
-        Call<GetMarginModeResponse> call = mock(Call.class);
-        when(call.execute()).thenReturn(Response.success(atr));
-
-        when(spotPoloPrivateApiService.getMarginMode("symbol")).thenReturn(call);
-        GetMarginModeResponse response = spotPoloRestClient.getMarginMode("symbol");
-        verify(spotPoloPrivateApiService, times(1)).getMarginMode("symbol");
-        assertEquals("test", response.getData().getSymbol());
-    }
-
-    @Test
-    void testGetLeverage() throws IOException {
-//        SwitchCrossRequest request = SwitchCrossRequest.builder().build();
-
-        GetLeverageResponse atr = new GetLeverageResponse();
-        atr.getData().setSymbol("test");
-
-        Call<GetLeverageResponse> call = mock(Call.class);
-        when(call.execute()).thenReturn(Response.success(atr));
-
-        when(spotPoloPrivateApiService.getLeverage("symbol")).thenReturn(call);
-        GetLeverageResponse response = spotPoloRestClient.getLeverage("symbol");
-        verify(spotPoloPrivateApiService, times(1)).getLeverage("symbol");
-        assertEquals("test", response.getData().getSymbol());
-    }
+//    @Test
+//    void testGetLeverage() throws IOException {
+////        SwitchCrossRequest request = SwitchCrossRequest.builder().build();
+//
+//        GetLeverageResponse atr = new GetLeverageResponse();
+//        atr.getData().setSymbol("test");
+//
+//        Call<GetLeverageResponse> call = mock(Call.class);
+//        when(call.execute()).thenReturn(Response.success(atr));
+//
+//        when(spotPoloPrivateApiService.getLeverage("symbol")).thenReturn(call);
+//        GetLeverageResponse response = spotPoloRestClient.getLeverage("symbol");
+//        verify(spotPoloPrivateApiService, times(1)).getLeverage("symbol");
+//        assertEquals("test", response.getData().getSymbol());
+//    }
 
     @Test
     void testSetLeverage() throws IOException {

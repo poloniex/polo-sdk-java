@@ -18,5 +18,7 @@ public class SetLeverageResponse {
     public static class SetLeverage {
         private String symbol;
         private String lever;
+        private String mgnMode;
+        private String posSide;
     }
 }

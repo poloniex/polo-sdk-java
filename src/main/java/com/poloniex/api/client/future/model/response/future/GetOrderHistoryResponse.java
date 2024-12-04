@@ -42,5 +42,6 @@ public class GetOrderHistoryResponse {
         private String stpMode = "NONE"; // Default value as NONE
         private String cTime;
         private String uTime;
+        private String posSide;
     }
 }
