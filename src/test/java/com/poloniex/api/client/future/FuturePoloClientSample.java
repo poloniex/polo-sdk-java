@@ -109,9 +109,9 @@ public class FuturePoloClientSample {
         log.info("getCurrentPosition: {}", writer.writeValueAsString(poloniexApiClient.getCurrentPosition("BTC_USDT_PERP")));
         log.info("getPositionHistory: {}", writer.writeValueAsString(poloniexApiClient.getPositionHistory("BTC_USDT_PERP",null,null,null,null,null,null)));
         log.info("adjustMargin: {}", writer.writeValueAsString(poloniexApiClient.adjustMargin(AdjustMarginRequest.builder().symbol("DOT_USDT_PERP").type("ADD").amt("50").build())));
-        log.info("switchCross: {}", writer.writeValueAsString(poloniexApiClient.switchCross(SwitchCrossRequest.builder().symbol("DOT_USDT_PERP").mgnMode("CROSS").build())));
-        log.info("getMarginMode: {}", writer.writeValueAsString(poloniexApiClient.getMarginMode("DOT_USDT_PERP")));
-        log.info("getLeverage: {}", writer.writeValueAsString(poloniexApiClient.getLeverage("BTC_USDT_PERP")));
+    //    log.info("switchCross: {}", writer.writeValueAsString(poloniexApiClient.switchCross(SwitchCrossRequest.builder().symbol("DOT_USDT_PERP").mgnMode("CROSS").build())));
+   //     log.info("getMarginMode: {}", writer.writeValueAsString(poloniexApiClient.getMarginMode("DOT_USDT_PERP")));
+     //   log.info("getLeverage: {}", writer.writeValueAsString(poloniexApiClient.getLeverage("BTC_USDT_PERP")));
         log.info("setLeverage: {}", writer.writeValueAsString(poloniexApiClient.setLeverage(SetLeverageRequest.builder().symbol("BTC_USDT_PERP").lever("7").build())));
     }
 

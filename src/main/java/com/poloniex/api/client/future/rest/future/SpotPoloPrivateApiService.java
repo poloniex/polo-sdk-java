@@ -106,27 +106,36 @@ public interface SpotPoloPrivateApiService {
                                                               @Query("limit")   Integer limit,
                                                               @Query("direct")  String direct,
                                                               @Query("sTime")   String sTime,
-                                                              @Query("eTime") String eTime);
+                                                              @Query("eTime") String eTime,
+                                                        @Query("posSide") String posSide);
 
 
     @POST(Adjust_Margin)
     Call<AdjustMarginResponse> adjustMargin(@Body AdjustMarginRequest  request);
 
 
-    @POST(Switch_Cross)
-    Call<SwitchCrossResponse> switchCross(@Body SwitchCrossRequest request);
+//    @POST(Switch_Cross)
+//    Call<SwitchCrossResponse> switchCross(@Body SwitchCrossRequest request);
 
+//    @GET(Margin_Mode)
+//    Call<GetMarginModeResponse> getMarginMode(@Query("symbol") String symbol);
 
-    @GET(Margin_Mode)
-    Call<GetMarginModeResponse> getMarginMode(@Query("symbol") String symbol);
-
-    @GET(Get_Leverage)
-    Call<GetLeverageResponse> getLeverage(@Query("symbol") String symbol);
+//    @GET(Get_Leverage)
+//    Call<GetLeverageResponse> getLeverage(@Query("symbol") String symbol);
 
 
     @POST(Set_Leverage)
     Call<SetLeverageResponse> setLeverage(@Body SetLeverageRequest request);
 
+    @POST(Switch_Mode)
+    Call<SetModeResponse> setPositionMode(@Body SetModeRequest request);
+
+    @GET(Get_Mode)
+    Call<GetModeResponse> getPositionMode();
+
+    @GET(Get_Leverages)
+    Call<GetLeveragesResponse> getLeverages(@Query("symbol") String symbol,
+                                            @Query("mgnMode") String mgnMode);
 
    /* @GET(Order_Book)
     Call<GetOrderBookResponse> getOrderBook(@Query("symbol")    String symbol,

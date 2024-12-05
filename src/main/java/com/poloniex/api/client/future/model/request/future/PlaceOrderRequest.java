@@ -24,4 +24,6 @@ public class PlaceOrderRequest {
     private Boolean reduceOnly; // Reduce only, optional
     private String timeInForce; // Enumerate FOK, IOC, and GTC. It is an optional field with GTC by default, optional.
     private String stpMode;     // Enumerate - EXPIRE_TAKER, EXPIRE_MAKER, EXPIRE_BOTH. Default is NONE, optional.
+    private String mgnMode;
+    private String posSide;
 }

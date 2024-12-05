@@ -20,5 +20,6 @@ public class AdjustMarginResponse {
         private String amt;    // Margin amount
         private String type;   // Operation type: ADD or REDUCE
         private String lever;  // Leverage of the current position, from 1 to 75
+        private String posSide;
     }
 }

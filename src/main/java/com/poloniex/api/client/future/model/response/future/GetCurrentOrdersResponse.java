@@ -40,6 +40,8 @@ public class GetCurrentOrdersResponse {
     private String deductAmt;
     private String stpMode;
     private String cTime;
-    private String uTime;}
+    private String uTime;
+    private String posSide;
+    }
 
 }

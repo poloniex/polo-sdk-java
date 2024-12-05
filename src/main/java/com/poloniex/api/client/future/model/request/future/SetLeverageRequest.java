@@ -15,4 +15,8 @@ public class SetLeverageRequest {
     private String symbol;
     @NonNull
     private String lever;
+    @NonNull
+    private String mgnMode;
+    @NonNull
+    private String posSide;
 }

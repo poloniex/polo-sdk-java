@@ -17,5 +17,6 @@ public class AdjustMarginRequest {
     private String amt;    // Margin amount
     @NonNull
     private String type;   // Operation type: ADD or REDUCE
-
+    @NonNull
+    private String posSide;
 }

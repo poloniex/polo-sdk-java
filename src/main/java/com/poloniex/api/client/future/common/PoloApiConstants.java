@@ -51,10 +51,14 @@ public class PoloApiConstants {
     public static final String Current_Position="/v3/trade/position/opens";
     public static final String Position_History="/v3/trade/position/history";
     public static final String Adjust_Margin="/v3/trade/position/margin";
-    public static final String Switch_Cross="/v3/position/switchIsolated";
-    public static final String Margin_Mode="/v3/position/marginType";
-    public static final String Get_Leverage="/v3/position/leverage";
+//    public static final String Switch_Cross="/v3/position/switchIsolated";
+//    public static final String Margin_Mode="/v3/position/marginType";
+//    public static final String Get_Leverage="/v3/position/leverage";
     public static final String Set_Leverage="/v3/position/leverage";
+
+    public static final String Switch_Mode="/v3/position/mode";
+    public static final String Get_Mode="/v3/position/mode";
+    public static final String Get_Leverages="/v3/position/leverages";
 
     public static final String Order_Book="/v3/market/orderBook";
     public static final String K_line_Data="/v3/market/candles";

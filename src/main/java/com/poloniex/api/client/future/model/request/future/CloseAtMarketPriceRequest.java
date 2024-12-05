@@ -14,4 +14,6 @@ public class CloseAtMarketPriceRequest {
     @NonNull
     private String symbol;   // 必需，表示交易对
     private String clOrdId;  // 可选，客户端指定的订单ID
+    private String mgnMode;
+    private String posSide;
 }

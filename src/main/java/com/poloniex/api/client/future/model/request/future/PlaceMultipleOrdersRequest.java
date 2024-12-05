@@ -24,4 +24,6 @@ public class PlaceMultipleOrdersRequest {
     private Boolean reduceOnly; // 可选
     private String timeInForce; // 可选，默认值GTC
     private String stpMode; // 可选，默认值NONE
+    private String mgnMode;
+    private String posSide;
 }

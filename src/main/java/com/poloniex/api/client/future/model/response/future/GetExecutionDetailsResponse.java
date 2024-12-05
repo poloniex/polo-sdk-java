@@ -37,5 +37,6 @@ public class GetExecutionDetailsResponse {
         private String deductCcy; // Currency for Deducted Fees
         private String deductAmt; // Cumulative Deducted Fee Amount
         private String feeRate; // Fee Rate
+        private String posSide;
     }
 }
