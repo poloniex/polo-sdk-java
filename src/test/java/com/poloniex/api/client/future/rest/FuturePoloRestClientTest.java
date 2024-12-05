@@ -302,7 +302,7 @@ request.add(request2);
 
     @Test
     void testAdjustMargin() throws IOException {
-        AdjustMarginRequest request = AdjustMarginRequest.builder().symbol("BTC").type("ADD").amt("10").build();
+        AdjustMarginRequest request = AdjustMarginRequest.builder().symbol("BTC").type("ADD").amt("10").posSide("null").build();
 
         AdjustMarginResponse atr = new AdjustMarginResponse();
         atr.getData().setSymbol("test");
@@ -315,6 +315,7 @@ request.add(request2);
         verify(spotPoloPrivateApiService, times(1)).adjustMargin(request);
         assertEquals("test", response.getData().getSymbol());
     }
+
 //    @Test
 //    void testSwitchCross() throws IOException {
 //        SwitchCrossRequest request = SwitchCrossRequest.builder().symbol("BTC").mgnMode("CROSS").build();
@@ -365,7 +366,7 @@ request.add(request2);
 
     @Test
     void testSetLeverage() throws IOException {
-        SetLeverageRequest request = SetLeverageRequest.builder().symbol("BTC").lever("7").build();
+        SetLeverageRequest request = SetLeverageRequest.builder().symbol("BTC").lever("7").mgnMode("").posSide("").build();
 
         SetLeverageResponse atr = new SetLeverageResponse();
         atr.getData().setSymbol("test");
@@ -377,6 +378,56 @@ request.add(request2);
         SetLeverageResponse response = spotPoloRestClient.setLeverage(request);
         verify(spotPoloPrivateApiService, times(1)).setLeverage(request);
         assertEquals("test", response.getData().getSymbol());
+    }
+
+    @Test
+    void testGetLeverages() throws IOException {
+
+        GetLeveragesResponse atr = new GetLeveragesResponse();
+        GetLeveragesResponse.GetLeverages getLeverages = new GetLeveragesResponse.GetLeverages();
+        getLeverages.setSymbol("test");
+        atr.getData().add(getLeverages);
+
+        Call<GetLeveragesResponse> call = mock(Call.class);
+        when(call.execute()).thenReturn(Response.success(atr));
+
+        when(spotPoloPrivateApiService.getLeverages("test","mgnMode")).thenReturn(call);
+        GetLeveragesResponse response = spotPoloRestClient.getLeverages("test","mgnMode");
+        verify(spotPoloPrivateApiService, times(1)).getLeverages("test","mgnMode");
+        assertEquals("test", response.getData().get(0).getSymbol());
+    }
+
+    @Test
+    void testSetPositionMode() throws IOException {
+
+        SetModeRequest request = SetModeRequest.builder().posMode("test").build();
+        SetModeResponse atr = new SetModeResponse();
+      //  atr.getData()("test");
+
+        Call<SetModeResponse> call = mock(Call.class);
+        when(call.execute()).thenReturn(Response.success(atr));
+
+        when(spotPoloPrivateApiService.setPositionMode(request)).thenReturn(call);
+        GetModeResponse response = spotPoloRestClient.getPositionMode();
+        verify(spotPoloPrivateApiService, times(1)).getPositionMode();
+        assertEquals("test", response.getData().getPosMode());
+    }
+
+    @Test
+    void testGetPositionMode() throws IOException {
+
+        GetModeResponse atr = new GetModeResponse();
+        GetModeResponse.PositionMode data = new GetModeResponse.PositionMode();
+        data.setPosMode("test");
+        atr.setData(data);
+
+        Call<GetModeResponse> call = mock(Call.class);
+        when(call.execute()).thenReturn(Response.success(atr));
+
+        when(spotPoloPrivateApiService.getPositionMode()).thenReturn(call);
+        GetModeResponse response = spotPoloRestClient.getPositionMode();
+        verify(spotPoloPrivateApiService, times(1)).getPositionMode();
+        assertEquals("test", response.getData().getPosMode());
     }
 
     @Test

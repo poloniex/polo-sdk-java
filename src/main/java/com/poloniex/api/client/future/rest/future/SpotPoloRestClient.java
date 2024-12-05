@@ -155,6 +155,9 @@ public CancelMultipleOrdersResponse cancelMultipleOrders(CancelMultipleOrdersReq
         return execute(spotPoloPrivateApiService.getCurrentPosition(symbol));
     }
 
+    public GetLeveragesResponse getLeverages(String symbol,String mgnModel) {
+        return execute(spotPoloPrivateApiService.getLeverages(symbol,mgnModel));
+    }
 
     public GetPositionHistoryResponse getPositionHistory(String symbol,
                                                                String mgnMode,
@@ -191,6 +194,9 @@ public CancelMultipleOrdersResponse cancelMultipleOrders(CancelMultipleOrdersReq
         return execute(spotPoloPrivateApiService.setLeverage(request));
     }
 
+    public GetModeResponse getPositionMode() {
+        return execute(spotPoloPrivateApiService.getPositionMode());
+    }
 
     public GetOrderBookResponse getOrderBook(String symbol,
                                              String scale,
